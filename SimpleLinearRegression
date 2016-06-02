@@ -1,0 +1,41 @@
+# Load data
+babies = read.table("http://www.ics.uci.edu/~staceyah/210/data/Bwt.dat", header=TRUE, sep=",")
+
+##Check that the data were read in correctly
+head(babies)
+tail(babies)
+dim(babies)	# For the dimension of a vector, use the function "length"
+names(babies)
+is.data.frame(babies)
+
+#Histograms
+hist(babies$gestation)
+hist(babies$gestation, breaks=40)
+hist(babies$gestation, breaks=40, freq=F)
+lines(density(babies$gestation))
+hist(babies$gestation,breaks=40,col="seagreen",main="Gestation Distribution",xlab="Days")
+
+#Boxplot: graphical display of a 5-number summary (min, 1st quartile, median, 3rd quartile, max)
+boxplot(babies$gestation)
+# or horizontal--
+boxplot(babies$gestation, horizontal = TRUE)
+
+# comparing two variables---plot
+attach(babies)
+plot(bwt)    # Plots birthweight vs. observation number
+plot(bwt ~ gestation)
+plot(bwt ~ smoke)
+plot(babies)
+plot(bwt~gestation,type="n",main="Bwt vs. Gestation by Smoke",xlab="Gestation (Days)",ylab="Bwt (Ounces)")	
+		# type="n" tells R just to set up the plot window
+		# and don't plot the points (think of "n" standing for "nothing")
+
+points(bwt[smoke==0]~gestation[smoke==0],pch=15,col="hotpink")		# Plot nonsmokers
+points(bwt[smoke==1]~gestation[smoke==1],pch=18,col="rosybrown")	# Plot smokers
+
+legend(locator(1),c("Nonsmoker","Smoker"),pch=c(15,18),col=c("hotpink","rosybrown"))	# Add legend
+ 
+abline(lm(bwt[smoke==0]~gestation[smoke==0]),col="hotpink")	# Add least squares regression lines
+abline(lm(bwt[smoke==1]~gestation[smoke==1]),col="rosybrown")
+
+

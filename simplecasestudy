@@ -1,0 +1,40 @@
+## Read in data from website
+SAT = read.csv("http://www.ics.uci.edu/~staceyah/210/data/sat.csv")
+
+## Check that data were read in correctly
+names(SAT)
+head(SAT)
+tail(SAT)
+dim(SAT)
+
+## Plot sat scores vs. expenditures
+plot(sat ~ expend, data=SAT, 
+  xlab="Average expenditure per pupil ($1000)", 
+  ylab="Average SAT Score", pch=15, col="dodgerblue")
+# Add least squares line  
+abline(lm(sat ~ expend, data=SAT))
+# Summary of simple linear regression model
+summary(lm(sat ~ expend, data=SAT))
+
+## Scatterplot matrix of all variables in the data set
+## (Plots with "State" are just index plots)
+plot(SAT)
+
+## Relationship between SAT and fraction of students taking SAT
+plot(sat ~ frac, data=SAT)
+
+## Multiple linear regression model controlling for frac
+summary(lm(sat ~ expend + frac, data=SAT))
+
+## How to visualize relationship between expend, sat, and frac?
+# Categorize frac into three equal size groups:
+quantile(SAT$frac, c(0, 1/3, 2/3, 1))
+SAT$frac.cat = cut(SAT$frac, c(0,11,55,100), labels=c("Low","Med","High"))
+# Use different plotting symbols and colors for each frac group:
+plot(sat ~ expend, data=SAT, 
+  xlab="Average expenditure per pupil ($1000)", 
+  ylab="Average SAT Score", 
+  pch=as.numeric(SAT$frac.cat), 
+  col=as.numeric(SAT$frac.cat)+1)
+# Add legend:
+legend("topright", c("Low","Med","High"), pch=c(1,2,3), col=c(2,3,4))

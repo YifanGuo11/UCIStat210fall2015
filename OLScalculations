@@ -1,0 +1,58 @@
+#### Fitting SLR
+
+## Read in data from website
+SAT = read.csv("http://www.ics.uci.edu/~staceyah/210/data/sat.csv")
+
+x = SAT$expend
+y = SAT$sat
+x
+y
+
+## Sample size
+n = length(y)
+
+## Summary statistics
+# Means
+xbar = mean(x)
+ybar = mean(y)
+
+# SS
+SXX = sum( (x - xbar)^2 )
+SYY = sum( (y - ybar)^2 )
+
+# Sum of cross products
+SXY = sum( (x - xbar)*(y - ybar) )
+
+## LS Estimates
+beta1hat = SXY/SXX
+beta0hat = ybar - beta1hat*xbar
+beta0hat
+beta1hat
+
+## Check with lm function
+lm(y ~ x)
+
+## Correlation
+r = SXY/sqrt(SXX*SYY)
+r
+cor(x,y)
+
+## Variances and standard deviations
+SXX/(n-1)
+var(x)
+
+sqrt(SXX/(n-1))
+sd(x)
+
+### Matrix Representation
+X = matrix(c( rep(1,n), x), nrow=n, ncol=2, byrow=FALSE)
+X
+
+H = X %*% solve( t(X) %*% X ) %*% t(X)
+H
+
+yhat = H%*%y
+
+betahat = solve( t(X) %*% X ) %*% t(X) %*% y
+betahat
+
